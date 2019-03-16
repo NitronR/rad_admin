@@ -1,0 +1,1 @@
+web: gunicorn rad_admin.wsgi
