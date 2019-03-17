@@ -1,3 +1,48 @@
 {% extends 'mainapp/base.html' %}
 
-{% block content %} Hello {% endblock %}
+{% block content %}
+
+{% verbatim %}
+<div class='container'>
+    <div id='app'>
+        <div class="row" v-for='alert in alerts'>
+            <div class="col s12 m7">
+                <div class="card">
+                    <div class="card-image">
+                        <img v-bind:src="alert.img">
+                        <span class="card-title">Camera: {{ alert.cam }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            Location:</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#">This is a link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            alerts: []
+        }
+    })
+    $(document).ready(function () {
+        setInterval(function () {
+            $.post('/get_ra', function (data) {
+                data.alerts = data.alerts.reverse()
+                app.alerts = data.alerts;
+                console.log(data);
+            })
+        }, 2000)
+    })
+</script>
+
+{% endverbatim %}
+{% endblock %}
